@@ -1,0 +1,23 @@
+Struktura e Fileve dhe Foldrave
+
+simple-devops-app/
+├─ index.php                      ← Frontend entry point
+├─ api.php                        ← Backend API
+├─ assets/                        ← bundle.js + styles.css
+├─ app/
+│  ├─ src/                        ← db.php për lidhje me MySQL
+│  └─ seed/                       ← seed.sql për inicializim databaze
+├─ webbuild/
+│  ├─ src/main.js                ← JavaScript origjinal
+│  ├─ esbuild.config.mjs        ← Konfigurim për bundle
+│  └─ package.json              ← Dependencies për esbuild
+├─ docker/
+│  └─ php-apache.Dockerfile     ← Imazh për PHP + Apache
+├─ docker-compose.yml           ← Konfigurim për web + db
+└─ .github/
+   └─ workflows/
+      ├─ build-frontend.yml      ← Ndërton bundle.js me esbuild
+      ├─ setup-database.yml      ← Krijon dhe popullon appdb me seed.sql
+      ├─ test.yml                ← Kontrollon që index.php ka <h1>Test DevOps</h1>
+      ├─ deploy.yml              ← Kopjon skedarët në htdocs dhe restarton Apache/MySQL
+      └─ ci-cd.yml               ← Pipeline e bashkuar me test + deploy + api check

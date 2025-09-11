@@ -1,0 +1,36 @@
+name: Build Frontend
+
+on:
+  push:
+    paths:
+      - 'webbuild/src/**'
+      - 'webbuild/esbuild.config.mjs'
+      - '.github/workflows/build-frontend.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: |
+        cd webbuild
+        npm install
+
+    - name: Build bundle.js
+      run: |
+        cd webbuild
+        npm run build
+
+    - name: Copy bundle.js to assets
+      run: |
+        mkdir -p app/public/assets
+        cp webbuild/dist/bundle.js app/public/assets/

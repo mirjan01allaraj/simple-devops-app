@@ -1,0 +1,54 @@
+name: Testing then Deploying
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Verify Frontend Title
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Read index.php and verify <h1>
+        shell: pwsh
+        run: |
+          $file = "C:/xampp/htdocs/simple-devops-app/index.php"
+          if (!(Test-Path $file)) {
+            Write-Error "index.php nuk u gjet në htdocs"
+            exit 1
+          }
+
+          $content = Get-Content $file -Raw
+          if ($content -match '<h1>\s*Test DevOps\s*</h1>') {
+            Write-Host "✅ Titulli <h1>Test DevOps</h1> u gjet siç duhet."
+          } else {
+            Write-Error "❌ Titulli nuk është i saktë ose mungon."
+            exit 1
+          }
+
+  deploy:
+    name: Deploy to XAMPP
+    runs-on: self-hosted
+    needs: test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Copy files to XAMPP htdocs (replace only changed)
+        shell: pwsh
+        run: |
+          $htdocs = "C:/xampp/htdocs/simple-devops-app"
+          if (!(Test-Path $htdocs)) {
+            New-Item -ItemType Directory -Path $htdocs | Out-Null
+          }
+          Copy-Item -Recurse -Force ./* $htdocs
+
+      - name: Restart Apache only
+        shell: pwsh
+        run: |
+          $xampp = "C:/xampp"
+          Start-Process -FilePath "$xampp/xampp-control.exe" -ArgumentList "/restartapache"
