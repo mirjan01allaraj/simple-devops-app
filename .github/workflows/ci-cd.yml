@@ -38,7 +38,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Copy files to XAMPP htdocs (replace only changed)
+      - name: Build frontend with esbuild
+        shell: bash
+        run: |
+          cd webbuild
+          npm install
+          npm run build
+
+      - name: Copy bundle.js to htdocs/assets
+        shell: pwsh
+        run: |
+          $target = "C:/xampp/htdocs/simple-devops-app/assets"
+          if (!(Test-Path $target)) {
+            New-Item -ItemType Directory -Path $target | Out-Null
+          }
+          Copy-Item -Force webbuild/dist/bundle.js $target
+
+      - name: Copy remaining files to htdocs (replace only changed)
         shell: pwsh
         run: |
           $htdocs = "C:/xampp/htdocs/simple-devops-app"
