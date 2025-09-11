@@ -1,0 +1,1 @@
+(()=>{document.addEventListener("DOMContentLoaded",async()=>{let d=await(await fetch("api.php")).json(),e=document.querySelector("#items-table tbody");e.innerHTML="";for(let t of d.data){let n=document.createElement("tr");n.innerHTML=`<td>${t.id}</td><td>${t.name}</td><td>${t.description}</td>`,e.appendChild(n)}});})();
