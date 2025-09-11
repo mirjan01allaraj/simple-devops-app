@@ -46,7 +46,7 @@ jobs:
           npm run build
 
       - name: Copy bundle.js to htdocs/assets
-        shell: pwsh
+        shell: powershell
         run: |
           $target = "C:/xampp/htdocs/simple-devops-app/assets"
           if (!(Test-Path $target)) {
