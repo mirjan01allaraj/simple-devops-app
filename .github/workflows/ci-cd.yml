@@ -55,7 +55,7 @@ jobs:
           Copy-Item -Force webbuild/dist/bundle.js $target
 
       - name: Copy remaining files to htdocs (replace only changed)
-        shell: pwsh
+        shell: powershell
         run: |
           $htdocs = "C:/xampp/htdocs/simple-devops-app"
           if (!(Test-Path $htdocs)) {
