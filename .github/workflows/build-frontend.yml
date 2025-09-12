@@ -25,12 +25,17 @@ jobs:
         cd webbuild
         npm install
 
-    - name: Build bundle.js
+    - name: Build bundle.js with esbuild
       run: |
         cd webbuild
         npm run build
 
-    - name: Copy bundle.js to assets
+    - name: Verify bundle.js exists
       run: |
-        mkdir -p app/public/assets
-        cp webbuild/dist/bundle.js app/public/assets/
+        if [ -f app/public/assets/bundle.js ]; then
+          echo "✅ bundle.js built successfully"
+        else
+          echo "❌ bundle.js is missing!"
+          exit 1
+        fi
+
