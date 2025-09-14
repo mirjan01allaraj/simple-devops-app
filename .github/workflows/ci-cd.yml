@@ -64,7 +64,7 @@ jobs:
           Copy-Item -Recurse -Force ./* $htdocs
 
       - name: Restart Apache only
-        shell: pwsh
+        shell: powershell
         run: |
           $xampp = "C:/xampp"
           Start-Process -FilePath "$xampp/xampp-control.exe" -ArgumentList "/restartapache"
